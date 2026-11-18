@@ -9,37 +9,37 @@ Aucun achat, aucune incitation à consommer, aucune personnalisation fondée sur
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows : .venv\Scripts\activate
 pip install -r requirements.txt
-streamlit run app.py
 ```
 
-Au premier lancement, SBERT télécharge `paraphrase-multilingual-MiniLM-L12-v2` (~0,5 Go). Hors connexion, ou sans `sentence-transformers`, l'application bascule seule sur le backend LSA (hors-ligne) et l'indique dans la barre latérale. Le modèle SBERT se change avec la variable d'environnement `WINE_SBERT_MODEL`.
+Puis ouvrir `notebook_recommandation_vins.ipynb` (VS Code ou Jupyter, kernel du `.venv`) et lancer « Run All ».
+
+Au premier lancement, SBERT télécharge `paraphrase-multilingual-MiniLM-L12-v2` (~0,5 Go). Hors connexion, ou sans `sentence-transformers`, le notebook bascule seul sur le backend LSA (hors-ligne) et l'indique dans la section 1. Le modèle SBERT se change avec la variable d'environnement `WINE_SBERT_MODEL`.
 
 ## Correspondance avec le sujet
 
 | Exigence du sujet | Où / comment |
 |---|---|
 | Jeu de données ≥ 50 références, structure `WineID \| Category \| Region \| Description \| SensoryProfile \| FoodPairing \| Keywords` | `data/wines.csv` : 60 vins, mêmes colonnes + `Name`, `Grape`, `PriceEUR` (nécessaire au filtre budget) |
-| Questionnaire : Likert, questions ouvertes, guidées, choix multiples, cases à cocher | `app.py` §1 : 5 échelles de Likert, 2 questions ouvertes (goûts, repas), 3 questions guidées, choix unique (occasion, plat) et multiple (notes à éviter, catégories, pays), 9 cases à cocher, 6 cartes de style notées de 1 à 5 |
+| Questionnaire : Likert, questions ouvertes, guidées, choix multiples, cases à cocher | Notebook §7 (objet `UserInput`) : 5 échelles de Likert, 2 questions ouvertes (goûts, repas), 3 questions guidées, choix unique (occasion, plat) et multiple (notes à éviter, catégories, pays), 9 cases à cocher, 6 cartes de style notées de 1 à 5 |
 | Informations attendues : texte libre, caractéristiques aromatiques, contexte mets-vins, évaluations, budget/contraintes | respectivement : zone de texte + occasion · cases à cocher · type de plat + texte · Likert + cartes de style · budget, catégorie, pays |
 | Embeddings contextuels (SBERT) + similarité cosinus | `embeddings.py::SBERTBackend` (backend principal) |
 | Embeddings de mots (Word2Vec / fastText) | `SpacyBackend` : moyenne de vecteurs fastText/word2vec de `fr_core_news_md` (baseline de comparaison) |
 | Clustering sémantique | K-means (k = 6) sur les embeddings des vins, affiché sur la carte sémantique |
-| Score d'affinité avec mécanisme de scoring défini et justifié | `wine_engine.py` + section *Méthodologie* ci-dessous et dans l'application |
+| Score d'affinité avec mécanisme de scoring défini et justifié | `wine_engine.py` + section *Méthodologie* ci-dessous et notebook §9 (calcul pas à pas) |
 | Score de couverture agrégeant plusieurs blocs | 9 blocs de goût, formule `Σ Wb·Sb / Σ Wb` (équivalent de l'exemple « blocs de compétences ») |
-| Profil utilisateur synthétisé puis recommandations | encadré « Profil détecté » + classement + explications par vin |
+| Profil utilisateur synthétisé puis recommandations | « Profil détecté » + classement + explications par vin (notebook §8 et §10) |
 | Visualisations | radar des blocs, barres empilées (décomposition du score), carte de similarité vins × blocs, carte PCA du catalogue |
-| Stockage structuré des réponses | `responses/responses.csv` (une ligne par soumission, réponses en JSON) + téléchargement JSON/CSV |
+| Stockage structuré des réponses | notebook §14 : enregistrement JSON de chaque réponse (`responses/notebook_responses.jsonl`, option `SAVE_RESPONSE`) |
 | Choix documentés et justifiés | ce README (section *Choix à justifier*) |
 
 ## Structure du projet
 
 ```
-app.py             interface Streamlit (questionnaire, résultats, visualisations)
-wine_engine.py     moteur : embeddings du catalogue, blocs, axes, scoring, filtres, explications (sans Streamlit)
+notebook_recommandation_vins.ipynb   le livrable : données, embeddings, scoring pas à pas, visualisations, évaluation
+wine_engine.py     moteur : embeddings du catalogue, blocs, axes, scoring, filtres, explications
 embeddings.py      backends interchangeables : sbert · spacy · lsa
 data/wines.csv     60 vins                      data/reference.json   blocs, axes, cartes de style, occasions, plats, questions guidées
-evaluate.py        comparaison des backends     docs/evaluation_results.md   dernier résultat
-tests/             test_engine.py (vérifs numériques) · smoke_test.py (interface sans navigateur)
+evaluate.py        19 requêtes de test et métriques (utilisé par le notebook)   docs/evaluation_results.md   dernier résultat
 ```
 
 Tout le référentiel sémantique est dans `data/` : on ajoute un vin (une ligne de CSV) ou une phrase de bloc sans toucher au code.
@@ -92,19 +92,17 @@ Tout le référentiel sémantique est dans `data/` : on ajoute un vin (une ligne
 | LSA (TF-IDF + SVD, 40 dim.) | 0,60 / 0,85 / 0,89 | 0,50 / 0,67 / 0,72 |
 | **SBERT** | **à mesurer sur votre machine** | **à mesurer sur votre machine** |
 
-À lire avec prudence : sur les requêtes directes, LSA n'est que légèrement au-dessus des mots-clés bruts (le jeu de données et les requêtes partagent beaucoup de vocabulaire) ; l'écart se voit sur les paraphrases. Une requête dont aucun mot n'est connu de LSA ou de spaCy ne renvoie rien (l'application l'indique) ; SBERT n'a pas cette limite. Cohérence des axes de structure (AUC, 1 = parfait) : LSA 1,00 / 1,00 / 0,99 / 0,94 et spaCy 1,00 / 0,73 / 0,87 / 0,90 pour corps / acidité / douceur / tanins.
+À lire avec prudence : sur les requêtes directes, LSA n'est que légèrement au-dessus des mots-clés bruts (le jeu de données et les requêtes partagent beaucoup de vocabulaire) ; l'écart se voit sur les paraphrases. Une requête dont aucun mot n'est connu de LSA ou de spaCy ne renvoie rien (le moteur le signale) ; SBERT n'a pas cette limite. Cohérence des axes de structure (AUC, 1 = parfait) : LSA 1,00 / 1,00 / 0,99 / 0,94 et spaCy 1,00 / 0,73 / 0,87 / 0,90 pour corps / acidité / douceur / tanins.
 
-## État des tests
+## Vérification
 
-- `python tests/test_engine.py` : formule de couverture recalculée à la main, renormalisation des poids, bornes du score, filtres, pénalité, cas vides — passé avec LSA et spaCy.
-- `python tests/smoke_test.py lsa` : parcours complet de l'interface (porte adulte, questionnaire, soumission, changement de pondération, journalisation) sans exception — passé avec LSA et spaCy.
-- **Le backend SBERT n'a pas pu être exécuté dans l'environnement de développement** (le téléchargement du modèle depuis huggingface.co y est bloqué) : son code est standard (`SentenceTransformer(...).encode(..., normalize_embeddings=True)`) mais son comportement n'a pas été mesuré. Lancez `python evaluate.py sbert lsa` puis `python tests/smoke_test.py sbert` chez vous et complétez le tableau ci-dessus.
-- L'affichage dans un navigateur n'a pas été inspecté visuellement (seulement exécuté sans erreur).
+- Le notebook recalcule à la main la formule de couverture et le score final du vin n°1 et les compare au moteur (`assert`, sections 9.1 et 9.2).
+- **Le backend SBERT n'a pas pu être exécuté dans l'environnement de développement** (le téléchargement du modèle depuis huggingface.co y est bloqué) : son code est standard (`SentenceTransformer(...).encode(..., normalize_embeddings=True)`) mais son comportement n'a pas été mesuré. Relancez le notebook avec `sentence-transformers` installé : SBERT est utilisé automatiquement et ajouté au tableau de la section 13.
 
 ## Limites et éthique
 
 - Jeu de données **fictif et pédagogique** : 60 profils types d'appellations rédigés pour le projet, prix indicatifs ; ce n'est ni un guide ni un conseil d'achat.
-- Pas d'achat, pas de lien marchand, pas de donnée de santé demandée ; une confirmation d'âge (18 ans) est demandée à l'entrée. Les réponses sont stockées localement dans `responses/` : ne pas y saisir d'informations personnelles.
+- Pas d'achat, pas de lien marchand, pas de donnée de santé demandée ; public adulte uniquement. Les réponses enregistrées par le notebook (option `SAVE_RESPONSE`) restent en local dans `responses/` : ne pas y saisir d'informations personnelles.
 - Scores relatifs au catalogue ; poids non appris.
 
 ## Pistes (bonus facultatif du sujet)
