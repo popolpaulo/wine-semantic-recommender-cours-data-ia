@@ -1,4 +1,4 @@
-# 🍷 Recommandeur sémantique de vins — Thème 5
+# Recommandeur sémantique de vins - Thème 5
 
 Projet *Analyse sémantique et systèmes intelligents de recommandation* · ESME ING5 A3MSI 2026-27.
 Prototype **pédagogique** (public adulte) : il associe des descriptions en langage naturel (goûts, occasion, repas) à des profils sensoriels de vins, par similarité sémantique d'embeddings.
