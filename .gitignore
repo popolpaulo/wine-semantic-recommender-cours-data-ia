@@ -1,0 +1,12 @@
+# Environnements et caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+.DS_Store
+
+# Réponses utilisateurs (données locales) : on garde seulement le dossier
+responses/*
+!responses/.gitkeep

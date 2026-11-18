@@ -1,0 +1,187 @@
+{
+  "_comment": "Référentiel sémantique du projet (équivalent des 'blocs de compétences' du sujet de référence). Chaque bloc de goût = une catégorie de notes liées, décrite par de courtes phrases. Modifiable sans toucher au code.",
+
+  "blocks": [
+    {
+      "id": "B1", "name": "Fruits rouges et noirs",
+      "phrases": [
+        "fraise, cerise, framboise",
+        "cassis, mûre, myrtille",
+        "prune, cerise noire, griotte",
+        "fruits rouges croquants et juteux",
+        "confiture de fruits noirs"
+      ]
+    },
+    {
+      "id": "B2", "name": "Agrumes et fruits blancs",
+      "phrases": [
+        "citron, pamplemousse, citron vert",
+        "pomme verte, poire, pêche blanche",
+        "fruits exotiques, ananas, litchi, fruit de la passion",
+        "abricot, pêche, fruits à noyau",
+        "zeste d'agrume frais"
+      ]
+    },
+    {
+      "id": "B3", "name": "Floral et herbacé",
+      "phrases": [
+        "fleurs blanches, acacia, chèvrefeuille",
+        "rose, violette, pivoine",
+        "herbe fraîchement coupée, buis, feuille de tomate",
+        "menthe, fenouil, herbes fraîches",
+        "fleur d'oranger, jasmin, camomille"
+      ]
+    },
+    {
+      "id": "B4", "name": "Épices et garrigue",
+      "phrases": [
+        "poivre noir, poivre blanc",
+        "réglisse, clou de girofle, cannelle",
+        "thym, romarin, garrigue, herbes de Provence",
+        "épices douces, muscade, gingembre",
+        "olive noire, cuir, tabac"
+      ]
+    },
+    {
+      "id": "B5", "name": "Boisé et torréfié",
+      "phrases": [
+        "vanille, noix de coco, bois de chêne",
+        "brioche, beurre, pain grillé",
+        "noisette, amande grillée, noix",
+        "café, cacao, chocolat, torréfaction",
+        "fumé, toasté, cèdre"
+      ]
+    },
+    {
+      "id": "B6", "name": "Minéral et salin",
+      "phrases": [
+        "pierre à fusil, silex, craie",
+        "iodé, salin, embruns marins",
+        "minéralité tendue, calcaire, ardoise",
+        "coquille d'huître, sel",
+        "pierre chaude, schiste"
+      ]
+    },
+    {
+      "id": "B7", "name": "Fraîcheur et vivacité",
+      "phrases": [
+        "acidité vive et tonique",
+        "vin frais, léger et désaltérant",
+        "bulles fines et effervescence",
+        "finale citronnée et tendue",
+        "digeste et énergique"
+      ]
+    },
+    {
+      "id": "B8", "name": "Rondeur et douceur",
+      "phrases": [
+        "rond, onctueux, gras, velouté",
+        "miel, fruits confits, caramel",
+        "moelleux, liquoreux, très doux",
+        "gourmand, tendre, généreux",
+        "texture crémeuse et enveloppante"
+      ]
+    },
+    {
+      "id": "B9", "name": "Structure et puissance",
+      "phrases": [
+        "tanins puissants et charpentés",
+        "corps plein, concentré et dense",
+        "tanins soyeux et élégants",
+        "longue persistance en bouche",
+        "vin de garde, complexe et profond"
+      ]
+    }
+  ],
+
+  "axes": {
+    "body": {
+      "label": "Corps (légèreté ↔ puissance)",
+      "low_label": "très léger", "high_label": "très puissant",
+      "low_word": "léger", "high_word": "puissant et corsé",
+      "low_phrases": ["vin très léger et aérien", "corps léger, peu alcoolisé", "vin simple et désaltérant"],
+      "high_phrases": ["vin puissant et corsé", "corps plein, concentré et dense", "vin riche et structuré"]
+    },
+    "acidity": {
+      "label": "Acidité (douce ↔ vive)",
+      "low_label": "douce, ronde", "high_label": "très vive",
+      "low_word": "à l'acidité douce", "high_word": "vif et tendu",
+      "low_phrases": ["acidité douce et modérée", "vin rond et souple", "faible acidité, texture grasse"],
+      "high_phrases": ["acidité vive et tonique", "vin tendu, frais et citronné", "fraîcheur éclatante"]
+    },
+    "sweetness": {
+      "label": "Douceur (sec ↔ moelleux)",
+      "low_label": "très sec", "high_label": "très doux",
+      "low_word": "sec", "high_word": "doux ou moelleux",
+      "low_phrases": ["vin sec", "pas de sucre, finale sèche"],
+      "high_phrases": ["vin doux et moelleux", "liquoreux, miel, fruits confits", "légèrement sucré et gourmand"]
+    },
+    "tannin": {
+      "label": "Tanins (souples ↔ marqués)",
+      "low_label": "aucun / souples", "high_label": "très marqués",
+      "low_word": "aux tanins souples", "high_word": "tannique et charpenté",
+      "low_phrases": ["tanins très souples, sans aspérité", "vin blanc ou rosé sans tanin", "texture fluide"],
+      "high_phrases": ["tanins puissants et serrés", "vin tannique et charpenté", "structure ferme, astringence"]
+    },
+    "intensity": {
+      "label": "Intensité aromatique (discret ↔ expressif)",
+      "low_label": "discret", "high_label": "très expressif",
+      "low_word": "discret et délicat", "high_word": "très aromatique",
+      "low_phrases": ["vin discret et délicat", "arômes subtils et retenus"],
+      "high_phrases": ["vin très aromatique et expressif", "nez intense, explosif et parfumé", "arômes puissants"]
+    }
+  },
+
+  "style_cards": [
+    {"id": "S1", "text": "Un vin frais, vif et citronné, avec des notes minérales et salines qui rappellent les embruns."},
+    {"id": "S2", "text": "Un rouge puissant et tannique, aux arômes de fruits noirs, d'épices et de cuir, pour les plats en sauce."},
+    {"id": "S3", "text": "Un vin rond, onctueux et gourmand, avec des notes de vanille, de beurre et de fruits mûrs."},
+    {"id": "S4", "text": "Un vin léger et fruité, sur la fraise et la cerise, facile à boire et servi frais."},
+    {"id": "S5", "text": "Un vin doux et parfumé, sur le miel, l'abricot et les fleurs, pour accompagner un dessert."},
+    {"id": "S6", "text": "Un vin effervescent aux bulles fines, festif, avec des notes de brioche et de pomme verte."}
+  ],
+
+  "occasions": {
+    "Apéritif entre amis": "un vin léger, frais et convivial pour l'apéritif entre amis",
+    "Repas de fête": "un vin élégant et festif pour célébrer un repas de fête",
+    "Dîner romantique": "un vin raffiné, gourmand et élégant pour un dîner romantique",
+    "Barbecue / grillades": "un vin généreux et fruité pour un barbecue entre amis",
+    "Repas du quotidien": "un vin simple, fruité et facile à boire pour un repas de tous les jours",
+    "Cadeau / grande occasion": "un grand vin complexe et prestigieux pour une grande occasion",
+    "Pique-nique / été": "un vin frais, léger et désaltérant pour un pique-nique d'été"
+  },
+
+  "food_types": {
+    "Viande rouge / gibier": "viande rouge grillée ou en sauce, côte de bœuf, gigot d'agneau, gibier",
+    "Volaille / viande blanche": "volaille rôtie, poulet, viande blanche à la crème",
+    "Poisson": "poisson grillé ou en sauce, poisson de rivière, saumon",
+    "Fruits de mer / huîtres": "huîtres, crustacés, moules, fruits de mer",
+    "Fromages": "plateau de fromages, fromage de chèvre, fromages affinés",
+    "Végétarien / légumes": "plats végétariens, légumes grillés, risotto, salades",
+    "Cuisine épicée / asiatique": "cuisine épicée, curry, plats asiatiques, sushis",
+    "Charcuterie / apéritif": "charcuterie, tapas, toasts et canapés d'apéritif",
+    "Pâtes / pizza": "pâtes sauce tomate, pizza, lasagnes",
+    "Dessert / fin de repas": "desserts, tarte aux fruits, chocolat, fin de repas"
+  },
+
+  "guided_questions": [
+    {
+      "id": "G1",
+      "question": "Avez-vous déjà goûté un vin élevé en fût de chêne (notes de vanille, de toast, de beurre) ?",
+      "block": "B5",
+      "options": ["Jamais goûté", "Oui, et j'ai aimé", "Oui, mais je n'ai pas aimé"]
+    },
+    {
+      "id": "G2",
+      "question": "Avez-vous déjà goûté un vin rouge très tannique (qui « accroche » en bouche) ?",
+      "block": "B9",
+      "options": ["Jamais goûté", "Oui, et j'ai aimé", "Oui, mais je n'ai pas aimé"]
+    },
+    {
+      "id": "G3",
+      "question": "Avez-vous déjà goûté un vin moelleux ou liquoreux (notes de miel et de fruits confits) ?",
+      "block": "B8",
+      "options": ["Jamais goûté", "Oui, et j'ai aimé", "Oui, mais je n'ai pas aimé"]
+    }
+  ]
+}
